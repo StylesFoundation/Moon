@@ -1,0 +1,45 @@
+package com.moon.scripting.api.functions.handlers.render.immediate;
+
+import com.moon.scripting.api.functions.render.ImmediateRenderFunctionContainer;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
+import org.luaj.vm2.lib.VarArgFunction;
+
+public class RectHandler extends VarArgFunction {
+   final ImmediateRenderFunctionContainer container;
+
+   public RectHandler(ImmediateRenderFunctionContainer container) {
+      this.container = container;
+   }
+
+   @Override
+   public Varargs invoke(Varargs varargs) {
+      LuaValue xVal = varargs.arg(1);
+      LuaValue yVal = varargs.arg(2);
+      LuaValue widthVal = varargs.arg(3);
+      LuaValue heightVal = varargs.arg(4);
+      LuaValue colorVal = varargs.arg(5);
+      if (!xVal.isnumber()) {
+         return LuaValue.error("Expected type number at 0, got " + xVal.typename());
+      }
+
+      if (!yVal.isnumber()) {
+         return LuaValue.error("Expected type number at 1, got " + yVal.typename());
+      }
+
+      if (!widthVal.isnumber()) {
+         return LuaValue.error("Expected type number at 2, got " + widthVal.typename());
+      }
+
+      if (!heightVal.isnumber()) {
+         return LuaValue.error("Expected type number at 3, got " + heightVal.typename());
+      }
+
+      if (!colorVal.isnumber()) {
+         return LuaValue.error("Expected type number at 4, got " + colorVal.typename());
+      }
+
+      this.container.implementation.rect(xVal.tofloat(), yVal.tofloat(), widthVal.tofloat(), heightVal.tofloat(), colorVal.toint());
+      return NIL;
+   }
+}

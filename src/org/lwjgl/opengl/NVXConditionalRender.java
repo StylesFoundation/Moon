@@ -1,0 +1,17 @@
+package org.lwjgl.opengl;
+
+import org.lwjgl.system.NativeType;
+
+public class NVXConditionalRender {
+   protected NVXConditionalRender() {
+      throw new UnsupportedOperationException();
+   }
+
+   public static native void glBeginConditionalRenderNVX(@NativeType("GLuint") int var0);
+
+   public static native void glEndConditionalRenderNVX();
+
+   static {
+      GL.initialize();
+   }
+}

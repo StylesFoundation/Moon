@@ -1,0 +1,45 @@
+package net.minecraft.client.particle;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+
+public class EntitySuspendFX extends EntityFX {
+   protected EntitySuspendFX(World world, double double2, double double3, double double4, double double5, double double6, double double7) {
+      super(world, double2, double3 - 0.125, double4, double5, double6, double7);
+      this.particleRed = 0.4F;
+      this.particleGreen = 0.4F;
+      this.particleBlue = 0.7F;
+      this.setParticleTextureIndex(0);
+      this.setSize(0.01F, 0.01F);
+      this.particleScale = this.particleScale * (this.rand.nextFloat() * 0.6F + 0.2F);
+      this.motionX = double5 * 0.0;
+      this.motionY = double6 * 0.0;
+      this.motionZ = double7 * 0.0;
+      this.particleMaxAge = (int)(16.0 / (Math.random() * 0.8 + 0.2));
+   }
+
+   @Override
+   public void onUpdate() {
+      this.prevPosX = this.posX;
+      this.prevPosY = this.posY;
+      this.prevPosZ = this.posZ;
+      this.moveEntity(this.motionX, this.motionY, this.motionZ);
+      if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() != Material.water) {
+         this.setDead();
+      }
+
+      if (this.particleMaxAge-- <= 0) {
+         this.setDead();
+      }
+   }
+
+   public static class Factory implements IParticleFactory {
+      @Override
+      public EntityFX getEntityFX(
+         int integer, World world, double double3, double double4, double double5, double double6, double double7, double double8, int... arr
+      ) {
+         return new EntitySuspendFX(world, double3, double4, double5, double6, double7, double8);
+      }
+   }
+}

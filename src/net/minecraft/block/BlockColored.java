@@ -1,0 +1,54 @@
+package net.minecraft.block;
+
+import java.util.List;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+public class BlockColored extends Block {
+   public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
+
+   public BlockColored(Material material) {
+      super(material);
+      this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
+      this.setCreativeTab(CreativeTabs.tabBlock);
+   }
+
+   @Override
+   public int damageDropped(IBlockState iBlockState) {
+      return iBlockState.getValue(COLOR).getMetadata();
+   }
+
+   @Override
+   public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
+      for (EnumDyeColor var10 : EnumDyeColor.values()) {
+         list.add(new ItemStack(item, 1, var10.getMetadata()));
+      }
+   }
+
+   @Override
+   public MapColor getMapColor(IBlockState iBlockState) {
+      return iBlockState.getValue(COLOR).getMapColor();
+   }
+
+   @Override
+   public IBlockState getStateFromMeta(int integer) {
+      return this.getDefaultState().withProperty(COLOR, EnumDyeColor.byMetadata(integer));
+   }
+
+   @Override
+   public int getMetaFromState(IBlockState iBlockState) {
+      return iBlockState.getValue(COLOR).getMetadata();
+   }
+
+   @Override
+   protected BlockState createBlockState() {
+      return new BlockState(this, COLOR);
+   }
+}

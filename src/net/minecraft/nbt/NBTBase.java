@@ -1,0 +1,85 @@
+package net.minecraft.nbt;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
+public abstract class NBTBase {
+   public static final String[] NBT_TYPES = new String[]{
+      "END", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "BYTE[]", "STRING", "LIST", "COMPOUND", "INT[]"
+   };
+
+   abstract void write(DataOutput dataOutput) throws IOException;
+
+   abstract void read(DataInput dataInput, int integer, NBTSizeTracker nBTSizeTracker) throws IOException;
+
+   @Override
+   public abstract String toString();
+
+   public abstract byte getId();
+
+   protected static NBTBase createNewByType(byte byte1) {
+      switch (byte1) {
+         case 0:
+            return new NBTTagEnd();
+         case 1:
+            return new NBTTagByte();
+         case 2:
+            return new NBTTagShort();
+         case 3:
+            return new NBTTagInt();
+         case 4:
+            return new NBTTagLong();
+         case 5:
+            return new NBTTagFloat();
+         case 6:
+            return new NBTTagDouble();
+         case 7:
+            return new NBTTagByteArray();
+         case 8:
+            return new NBTTagString();
+         case 9:
+            return new NBTTagList();
+         case 10:
+            return new NBTTagCompound();
+         case 11:
+            return new NBTTagIntArray();
+         default:
+            return null;
+      }
+   }
+
+   public abstract NBTBase copy();
+
+   public boolean hasNoTags() {
+      return false;
+   }
+
+   @Override
+   public boolean equals(Object object) {
+      return object instanceof NBTBase var5 ? this.getId() == var5.getId() : false;
+   }
+
+   @Override
+   public int hashCode() {
+      return this.getId();
+   }
+
+   protected String getString() {
+      return this.toString();
+   }
+
+   public abstract static class NBTPrimitive extends NBTBase {
+      public abstract long getLong();
+
+      public abstract int getInt();
+
+      public abstract short getShort();
+
+      public abstract byte getByte();
+
+      public abstract double getDouble();
+
+      public abstract float getFloat();
+   }
+}

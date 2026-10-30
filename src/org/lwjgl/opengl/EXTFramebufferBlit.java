@@ -1,0 +1,31 @@
+package org.lwjgl.opengl;
+
+import org.lwjgl.system.NativeType;
+
+public class EXTFramebufferBlit {
+   public static final int GL_READ_FRAMEBUFFER_EXT = 36008;
+   public static final int GL_DRAW_FRAMEBUFFER_EXT = 36009;
+   public static final int GL_DRAW_FRAMEBUFFER_BINDING_EXT = 36006;
+   public static final int GL_READ_FRAMEBUFFER_BINDING_EXT = 36010;
+
+   protected EXTFramebufferBlit() {
+      throw new UnsupportedOperationException();
+   }
+
+   public static native void glBlitFramebufferEXT(
+      @NativeType("GLint") int var0,
+      @NativeType("GLint") int var1,
+      @NativeType("GLint") int var2,
+      @NativeType("GLint") int var3,
+      @NativeType("GLint") int var4,
+      @NativeType("GLint") int var5,
+      @NativeType("GLint") int var6,
+      @NativeType("GLint") int var7,
+      @NativeType("GLbitfield") int var8,
+      @NativeType("GLenum") int var9
+   );
+
+   static {
+      GL.initialize();
+   }
+}

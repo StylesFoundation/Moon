@@ -1,0 +1,40 @@
+package org.lwjgl.glfw;
+
+import org.lwjgl.system.Configuration;
+import org.lwjgl.system.JNI;
+import org.lwjgl.system.Platform;
+import org.lwjgl.system.macosx.LibC;
+import org.lwjgl.system.macosx.ObjCRuntime;
+
+final class EventLoop {
+   private EventLoop() {
+   }
+
+   static void check() {
+   }
+
+   private static boolean isMainThread() {
+      if (Configuration.GLFW_CHECK_THREAD0.get(true) && !Configuration.GLFW_LIBRARY_NAME.get("").contains("glfw_async")) {
+         long objc_msgSend = ObjCRuntime.getLibrary().getFunctionAddress("objc_msgSend");
+         long NSThread = ObjCRuntime.objc_getClass("NSThread");
+         long currentThread = JNI.invokePPP(NSThread, ObjCRuntime.sel_getUid("currentThread"), objc_msgSend);
+         return JNI.invokePPZ(currentThread, ObjCRuntime.sel_getUid("isMainThread"), objc_msgSend);
+      } else {
+         return true;
+      }
+   }
+
+   private static boolean isJavaStartedOnFirstThread() {
+      return "1".equals(System.getenv().get("JAVA_STARTED_ON_FIRST_THREAD_" + LibC.getpid()));
+   }
+
+   static {
+      if (Platform.get() == Platform.MACOSX && !isMainThread()) {
+         throw new IllegalStateException(
+            isJavaStartedOnFirstThread()
+               ? "GLFW may only be used on the main thread. This check may be disabled with Configuration.GLFW_CHECK_THREAD0."
+               : "GLFW may only be used on the main thread and that thread must be the first thread in the process. Please run the JVM with -XstartOnFirstThread. This check may be disabled with Configuration.GLFW_CHECK_THREAD0."
+         );
+      }
+   }
+}
