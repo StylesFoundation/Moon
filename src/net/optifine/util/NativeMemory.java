@@ -47,7 +47,7 @@ public class NativeMemory {
          return null;
       }
 
-      Class var10000 = Class.forName(_d.a(arr[0]));
+      Class var10000 = Class.forName(arr[0]);
       String var10001 = arr[1];
       Class[] var10003 = new Class[0];
       Method var4 = var10000.getMethod(_d.b(var10001, var10000, var10003), var10003);

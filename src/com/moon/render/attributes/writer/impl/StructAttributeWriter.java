@@ -26,7 +26,7 @@ public class StructAttributeWriter extends AttributeWriter {
       Object instance = valueType.getDeclaredConstructor().newInstance();
 
       try {
-         String nameFieldName = _d.c(valueType, "_name");
+         String nameFieldName = "_name";
          String defaultFieldName = "_name";
          Field nameField = valueType.getDeclaredField(nameFieldName);
          if (!nameField.canAccess(instance)) {
